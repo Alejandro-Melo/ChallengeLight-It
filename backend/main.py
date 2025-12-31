@@ -35,7 +35,7 @@ async def create_patient(
         await setup(connection)
         #Send background tasks for adding the patient to the db and sending the email
         await add_patient(connection, patient, path, background_tasks)
-        return {"msg":"File Uploaded Successfuly!"}
+        return {"msg":"Patient added Successfuly!"}
     
     except ValidationError as e:
         return {"err": e}
