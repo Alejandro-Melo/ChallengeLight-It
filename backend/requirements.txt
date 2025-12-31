@@ -1,0 +1,10 @@
+pydantic
+pydantic_extra_types
+phonenumbers
+pydantic[email]
+python-multipart
+fastapi[standard]
+fastapi_mail
+pytest
+asyncpg
+dotenv
