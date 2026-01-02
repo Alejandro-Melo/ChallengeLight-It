@@ -61,6 +61,7 @@ async def add_patient(connection, patient, path, background_task: BackgroundTask
             path
         )
         logger.info('Patient inserted Succesfully!')
+        #Uses background_task for sending an asynchronous notification that the patient has been created
         background_task.add_task(send_notification, [os.environ.get('MAIL_TO')])
         return None
     except Exception as e:

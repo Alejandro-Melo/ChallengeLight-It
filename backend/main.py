@@ -9,7 +9,7 @@ from pydantic_extra_types.phone_numbers import PhoneNumber
 from typing import Annotated
 
 #Config setup
-logger = logging.getLogger('test')
+logger = logging.getLogger('main app')
 app = FastAPI()
 IMAGES = "../uploads/"
 
@@ -27,14 +27,15 @@ async def create_patient(
         patient = Patient(email=email, name=name, phone=phone, photo=photo)
         #Uploads the photo and gets the path of the file
         path = await upload_photo(patient.photo, IMAGES)
-        #Connects to the db and creates the required table if needed
+        #Connects to the db
         connection = await connect_db()
         if not connection:
             return {"error": "Database connection failed"}
         #Setup the db, with the required table
         await setup(connection)
-        #Send background tasks for adding the patient to the db and sending the email
+        #Run the add patient function, with the patient info and background_tasks for email sending
         await add_patient(connection, patient, path, background_tasks)
+        logger.info('Finished the process Successfully!')
         return {"msg":"Patient added Successfuly!"}
     
     except ValidationError as e:

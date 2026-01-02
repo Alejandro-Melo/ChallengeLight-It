@@ -23,10 +23,14 @@ async def upload_photo(photo: Annotated[UploadFile, File()], IMAGES):
     os.makedirs(IMAGES, exist_ok=True)
 
     # Reads from received content
-    contents = await photo.read()
-    name = uuid.uuid4()
-    file_path = os.path.join(IMAGES, f"{str(name)}.jpg")
-    with open(file_path, "wb") as f:
-        f.write(contents)
-    
-    return f'/{file_path}'
+    try:
+        contents = await photo.read()
+        name = uuid.uuid4()
+        file_path = os.path.join(IMAGES, f"{str(name)}.jpg")
+        with open(file_path, "wb") as f:
+            f.write(contents)
+        logger.info('File uploaded!')
+        return f'/{file_path}'
+    except Exception as e:
+        logger.error(f"Error: \n{e}")
+        return None
